@@ -292,25 +292,66 @@ body {
 
 .candles-container {
     position: absolute;
-    top: 36px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 96px;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    gap: 8px;
+    align-items: center;
     z-index: 10;
-    flex-wrap: wrap;
+    pointer-events: none;
 }
 
+/* Arrange candles in a circle around the cake */
 .candle {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -4px;
+    margin-top: -20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
+/* Position each candle in a circle */
+.candle:nth-child(1) { transform: rotate(0deg) translateY(-120px) rotate(-0deg); }
+.candle:nth-child(2) { transform: rotate(10.3deg) translateY(-120px) rotate(-10.3deg); }
+.candle:nth-child(3) { transform: rotate(20.6deg) translateY(-120px) rotate(-20.6deg); }
+.candle:nth-child(4) { transform: rotate(30.9deg) translateY(-120px) rotate(-30.9deg); }
+.candle:nth-child(5) { transform: rotate(41.1deg) translateY(-120px) rotate(-41.1deg); }
+.candle:nth-child(6) { transform: rotate(51.4deg) translateY(-120px) rotate(-51.4deg); }
+.candle:nth-child(7) { transform: rotate(61.7deg) translateY(-120px) rotate(-61.7deg); }
+.candle:nth-child(8) { transform: rotate(72deg) translateY(-120px) rotate(-72deg); }
+.candle:nth-child(9) { transform: rotate(82.3deg) translateY(-120px) rotate(-82.3deg); }
+.candle:nth-child(10) { transform: rotate(92.6deg) translateY(-120px) rotate(-92.6deg); }
+.candle:nth-child(11) { transform: rotate(102.9deg) translateY(-120px) rotate(-102.9deg); }
+.candle:nth-child(12) { transform: rotate(113.1deg) translateY(-120px) rotate(-113.1deg); }
+.candle:nth-child(13) { transform: rotate(123.4deg) translateY(-120px) rotate(-123.4deg); }
+.candle:nth-child(14) { transform: rotate(133.7deg) translateY(-120px) rotate(-133.7deg); }
+.candle:nth-child(15) { transform: rotate(144deg) translateY(-120px) rotate(-144deg); }
+.candle:nth-child(16) { transform: rotate(154.3deg) translateY(-120px) rotate(-154.3deg); }
+.candle:nth-child(17) { transform: rotate(164.6deg) translateY(-120px) rotate(-164.6deg); }
+.candle:nth-child(18) { transform: rotate(174.9deg) translateY(-120px) rotate(-174.9deg); }
+.candle:nth-child(19) { transform: rotate(185.1deg) translateY(-120px) rotate(-185.1deg); }
+.candle:nth-child(20) { transform: rotate(195.4deg) translateY(-120px) rotate(-195.4deg); }
+.candle:nth-child(21) { transform: rotate(205.7deg) translateY(-120px) rotate(-205.7deg); }
+.candle:nth-child(22) { transform: rotate(216deg) translateY(-120px) rotate(-216deg); }
+.candle:nth-child(23) { transform: rotate(226.3deg) translateY(-120px) rotate(-226.3deg); }
+.candle:nth-child(24) { transform: rotate(236.6deg) translateY(-120px) rotate(-236.6deg); }
+.candle:nth-child(25) { transform: rotate(246.9deg) translateY(-120px) rotate(-246.9deg); }
+.candle:nth-child(26) { transform: rotate(257.1deg) translateY(-120px) rotate(-257.1deg); }
+.candle:nth-child(27) { transform: rotate(267.4deg) translateY(-120px) rotate(-267.4deg); }
+.candle:nth-child(28) { transform: rotate(277.7deg) translateY(-120px) rotate(-277.7deg); }
+.candle:nth-child(29) { transform: rotate(288deg) translateY(-120px) rotate(-288deg); }
+.candle:nth-child(30) { transform: rotate(298.3deg) translateY(-120px) rotate(-298.3deg); }
+.candle:nth-child(31) { transform: rotate(308.6deg) translateY(-120px) rotate(-308.6deg); }
+.candle:nth-child(32) { transform: rotate(318.9deg) translateY(-120px) rotate(-318.9deg); }
+.candle:nth-child(33) { transform: rotate(329.1deg) translateY(-120px) rotate(-329.1deg); }
+.candle:nth-child(34) { transform: rotate(339.4deg) translateY(-120px) rotate(-339.4deg); }
+.candle:nth-child(35) { transform: rotate(349.7deg) translateY(-120px) rotate(-349.7deg); }
 
 .candle-stick {
     width: 8px;
@@ -626,6 +667,17 @@ body {
     line-height: 1.8;
 }
 
+.birthday-card-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 16px auto 24px;
+    display: block;
+    border: 2px solid;
+    border-color: #808080 #DFDFDF #DFDFDF #808080;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 /* ========================================
    CONFETTI CANVAS
    ======================================== */
@@ -668,19 +720,23 @@ body {
         gap: 24px;
     }
 
-    .candles-container {
-        gap: 4px;
-        height: 80px;
+    .candle:nth-child(n) {
+        transform: rotate(calc(360deg / 35 * var(--i))) translateY(-100px) rotate(calc(-360deg / 35 * var(--i)));
     }
 
     .candle-stick {
         width: 6px;
-        height: 32px;
+        height: 28px;
     }
 
     .candle-flame {
-        width: 16px;
-        height: 24px;
+        width: 14px;
+        height: 22px;
+    }
+
+    .birthday-card-image {
+        max-width: 300px;
+        margin: 12px auto 20px;
     }
 
     .modal-content,
@@ -776,25 +832,27 @@ body {
         height: 24px;
     }
 
-    .candles-container {
-        gap: 4px;
-        width: 70%;
-        height: 64px;
-        top: 32px;
-    }
-
     .cake {
         padding: 12px;
     }
 
+    .candle:nth-child(n) {
+        transform: rotate(calc(360deg / 35 * var(--i))) translateY(-80px) rotate(calc(-360deg / 35 * var(--i)));
+    }
+
     .candle-stick {
         width: 4px;
-        height: 24px;
+        height: 20px;
     }
 
     .candle-flame {
-        width: 12px;
-        height: 20px;
+        width: 10px;
+        height: 16px;
+    }
+
+    .birthday-card-image {
+        max-width: 250px;
+        margin: 10px auto 16px;
     }
 
     .modal-content,

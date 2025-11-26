@@ -74,11 +74,7 @@ const CONFIG = {
     BLOW_COOLDOWN: 1000,
     CONFETTI_COUNT: 150,
     CONFETTI_COLORS: ['#FFB6C1', '#FFD700', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C'],
-    CANDLES: {
-        MOBILE: 8,
-        TABLET: 12,
-        DESKTOP: 15
-    }
+    TOTAL_CANDLES: 35
 };
 
 // ========================================
@@ -143,16 +139,7 @@ elements.enableAudioBtn.addEventListener('click', () => {
 // ========================================
 
 function initializeCake() {
-    const screenWidth = window.innerWidth;
-
-    // Determine candle count based on screen size
-    if (screenWidth < 480) {
-        state.totalCandles = CONFIG.CANDLES.MOBILE;
-    } else if (screenWidth < 768) {
-        state.totalCandles = CONFIG.CANDLES.TABLET;
-    } else {
-        state.totalCandles = CONFIG.CANDLES.DESKTOP;
-    }
+    state.totalCandles = CONFIG.TOTAL_CANDLES;
 
     // Generate candles
     elements.candlesContainer.innerHTML = '';
@@ -234,10 +221,12 @@ function handleInstructionOkay() {
         // Start listening for blows
         state.isListeningForBlow = true;
 
-        // Show fallback button if mic not allowed
-        if (!state.microphoneAllowed) {
-            elements.tapFallbackBtn.classList.remove('hidden');
-        }
+        // Show fallback button if mic not allowed (check after a small delay to ensure mic request completed)
+        setTimeout(() => {
+            if (!state.microphoneAllowed) {
+                elements.tapFallbackBtn.classList.remove('hidden');
+            }
+        }, 500);
     });
 }
 
@@ -369,14 +358,30 @@ function blowOutCandles(percentage) {
     const currentlyLit = state.litCandles.filter(lit => lit).length;
     const toBlowOut = targetCount - (state.totalCandles - currentlyLit);
 
-    let blown = 0;
-    for (let i = 0; i < state.litCandles.length && blown < toBlowOut; i++) {
+    // Get indices of lit candles
+    const litIndices = [];
+    for (let i = 0; i < state.litCandles.length; i++) {
         if (state.litCandles[i]) {
-            state.litCandles[i] = false;
-            candles[i].classList.add('out');
-            blown++;
+            litIndices.push(i);
         }
     }
+
+    // Randomly shuffle lit candles and blow out the required number
+    shuffleArray(litIndices);
+    for (let i = 0; i < toBlowOut && i < litIndices.length; i++) {
+        const index = litIndices[i];
+        state.litCandles[index] = false;
+        candles[index].classList.add('out');
+    }
+}
+
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 function finishBlowing() {
