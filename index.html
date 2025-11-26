@@ -55,17 +55,17 @@
                 <!-- Windows 2000 Title Bar -->
                 <div class="cake-window-title">♡ Birthday Cake ━  □  ✕</div>
 
-                <!-- Candles will be dynamically generated here -->
-                <div id="candlesContainer" class="candles-container"></div>
-
                 <!-- Cake Image -->
                 <img
                     id="cakeImage"
                     src="birthday cake.png"
                     alt="Birthday Cake"
-                    class="cake"
+                    class="cake-image"
                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\'%3E%3Crect fill=\'%23FFB6C1\' width=\'400\' height=\'400\' rx=\'20\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'60\' text-anchor=\'middle\' dy=\'.3em\'%3E🎂%3C/text%3E%3C/svg%3E'"
                 >
+
+                <!-- Candle Ring - 35 candles will be dynamically generated here -->
+                <div id="candleRing" class="candle-ring"></div>
             </div>
 
             <button id="letsGoBtn" class="btn btn-large">Let's go!</button>

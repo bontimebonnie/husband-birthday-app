@@ -57,7 +57,7 @@ const elements = {
     audioOverlay: document.getElementById('audioOverlay'),
 
     // Dynamic Content
-    candlesContainer: document.getElementById('candlesContainer'),
+    candleRing: document.getElementById('candleRing'),
 
     // Media
     birthdayMusic: document.getElementById('birthdayMusic'),
@@ -141,20 +141,26 @@ elements.enableAudioBtn.addEventListener('click', () => {
 function initializeCake() {
     state.totalCandles = CONFIG.TOTAL_CANDLES;
 
-    // Generate candles
-    elements.candlesContainer.innerHTML = '';
+    // Generate candles with unique IDs
+    elements.candleRing.innerHTML = '';
     state.litCandles = [];
 
     for (let i = 0; i < state.totalCandles; i++) {
-        const candle = createCandleElement();
-        elements.candlesContainer.appendChild(candle);
+        const candle = createCandleElement(i + 1);
+        elements.candleRing.appendChild(candle);
         state.litCandles.push(true);
     }
 }
 
-function createCandleElement() {
+function createCandleElement(id) {
     const candle = document.createElement('div');
     candle.className = 'candle';
+    candle.id = `candle-${id}`;
+
+    // Calculate angle for this candle (360 degrees / 35 candles)
+    const angle = (360 / CONFIG.TOTAL_CANDLES) * (id - 1);
+    candle.style.setProperty('--angle', `${angle}deg`);
+
     candle.innerHTML = `
         <div class="candle-flame"></div>
         <div class="candle-stick"></div>
