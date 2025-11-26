@@ -1,0 +1,889 @@
+/* ========================================
+   Y2K BIRTHDAY APP - Windows 2000 Aesthetic
+   8px Spacing System
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ========================================
+   GLOBAL RESET & BASE
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+body {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(173, 216, 230, 0.1) 0px,
+            rgba(173, 216, 230, 0.1) 2px,
+            transparent 2px,
+            transparent 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(173, 216, 230, 0.1) 0px,
+            rgba(173, 216, 230, 0.1) 2px,
+            transparent 2px,
+            transparent 4px
+        ),
+        linear-gradient(180deg, #87CEEB 0%, #B0E0E6 50%, #87CEFA 100%);
+    background-attachment: fixed;
+    color: #000080;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ========================================
+   STAGE SYSTEM
+   ======================================== */
+
+.stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.stage.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+}
+
+/* ========================================
+   STAGE 1: NAME INPUT - Y2K BROWSER WINDOW
+   ======================================== */
+
+.question {
+    font-size: clamp(0.8rem, 3vw, 1.2rem);
+    font-weight: 400;
+    margin-bottom: 48px;
+    color: #000080;
+    line-height: 1.8;
+    padding: 48px 40px;
+    background: white;
+    border: 3px solid;
+    border-color: #DFDFDF #808080 #808080 #DFDFDF;
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        inset -1px -1px 0px #000000,
+        2px 2px 0px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Browser window title bar */
+.question::before {
+    content: '♡ Happy Birthday! - Internet Explorer';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: linear-gradient(180deg, #0997FF 0%, #0053EE 100%);
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border-bottom: 1px solid #000080;
+}
+
+/* Browser window buttons */
+.question::after {
+    content: '━  □  ✕';
+    position: absolute;
+    top: 0;
+    right: 4px;
+    height: 24px;
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1;
+}
+
+#nameForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+#nameInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-family: 'Press Start 2P', monospace;
+    border: 2px solid;
+    border-color: #808080 #DFDFDF #DFDFDF #808080;
+    background: white;
+    color: #000080;
+    text-align: center;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#nameInput:focus {
+    outline: 1px dotted #000080;
+    outline-offset: -3px;
+}
+
+#nameInput::placeholder {
+    color: #808080;
+    font-size: 0.7rem;
+}
+
+/* ========================================
+   BUTTONS - Y2K STYLE
+   ======================================== */
+
+.btn {
+    padding: 12px 32px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #000080;
+    background: linear-gradient(180deg, #ECE9D8 0%, #C7C3B6 100%);
+    border: 2px solid;
+    border-color: #FFFFFF #808080 #808080 #FFFFFF;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    min-width: 160px;
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        1px 1px 0px rgba(0, 0, 0, 0.2);
+    text-transform: none;
+}
+
+.btn:hover {
+    background: linear-gradient(180deg, #F5F4EE 0%, #D4D0C4 100%);
+}
+
+.btn:active {
+    border-color: #808080 #FFFFFF #FFFFFF #808080;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+    transform: translate(1px, 1px);
+}
+
+.btn-large {
+    padding: 16px 40px;
+    font-size: 0.9rem;
+    margin-top: 32px;
+    background: linear-gradient(180deg, #FFB6FF 0%, #FF69B4 100%);
+    color: white;
+    border-color: #FFD1FF #CC0088 #CC0088 #FFD1FF;
+}
+
+.btn-large:hover {
+    background: linear-gradient(180deg, #FFC8FF 0%, #FF80C0 100%);
+}
+
+.btn-small {
+    padding: 10px 24px;
+    font-size: 0.65rem;
+    margin-top: 16px;
+    min-width: auto;
+    background: linear-gradient(180deg, #D4F4DD 0%, #90EE90 100%);
+    border-color: #EEFFEE #228B22 #228B22 #EEFFEE;
+}
+
+.btn-small:hover {
+    background: linear-gradient(180deg, #E0FFE8 0%, #A0FFA0 100%);
+}
+
+/* ========================================
+   STAGE 2: BIRTHDAY PAGE - Y2K WINDOWS
+   ======================================== */
+
+.birthday-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 16px;
+    width: 100%;
+}
+
+.banner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Windows 2000 frame around banners */
+.banner-container::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 3px solid;
+    border-color: #DFDFDF #808080 #808080 #DFDFDF;
+    box-shadow: inset 1px 1px 0px #FFFFFF;
+    pointer-events: none;
+}
+
+.banner-top {
+    margin-bottom: 24px;
+}
+
+.banner-bottom {
+    margin-top: 32px;
+}
+
+.banner {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: 2px solid #000080;
+}
+
+.cake-container {
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+    margin: 24px auto;
+    padding: 0;
+    background: #ECE9D8;
+    border: 3px solid;
+    border-color: #DFDFDF #808080 #808080 #DFDFDF;
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        3px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Windows 2000 Title Bar for Cake Window */
+.cake-window-title {
+    height: 28px;
+    background: linear-gradient(180deg, #0997FF 0%, #0053EE 100%);
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border-bottom: 2px solid #000080;
+    font-family: 'Press Start 2P', monospace;
+}
+
+.candles-container {
+    position: absolute;
+    top: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    z-index: 10;
+    flex-wrap: wrap;
+}
+
+.candle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.candle-stick {
+    width: 8px;
+    height: 40px;
+    background: linear-gradient(180deg, #FFE4B5 0%, #DEB887 100%);
+    border: 1px solid #8B4513;
+}
+
+.candle-flame {
+    width: 20px;
+    height: 30px;
+    background:
+        radial-gradient(circle at 50% 50%, #FFFF00 0%, #FFA500 50%, #FF4500 100%);
+    clip-path: polygon(50% 0%, 30% 40%, 40% 100%, 60% 100%, 70% 40%);
+    position: relative;
+    top: -4px;
+    animation: y2kFlicker 1s steps(4) infinite alternate;
+    filter:
+        drop-shadow(0 0 4px #FFFF00)
+        drop-shadow(0 0 8px #FFA500);
+}
+
+.candle-flame.out {
+    opacity: 0;
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes y2kFlicker {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+        filter:
+            drop-shadow(0 0 4px #FFFF00)
+            drop-shadow(0 0 8px #FFA500);
+    }
+    50% {
+        transform: scale(1.15) translateY(-4px);
+        filter:
+            drop-shadow(0 0 6px #FFFF00)
+            drop-shadow(0 0 12px #FFA500);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+}
+
+.cake {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 16px;
+    background: white;
+    border: 2px solid;
+    border-color: #808080 #DFDFDF #DFDFDF #808080;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   MODALS - Y2K POPUP WINDOWS
+   ======================================== */
+
+.modal,
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 128, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 16px;
+}
+
+.modal.active,
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal.hidden,
+.overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal-content,
+.overlay-content {
+    background: #ECE9D8;
+    padding: 8px;
+    border: 3px solid;
+    border-color: #DFDFDF #808080 #808080 #DFDFDF;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        3px 3px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+/* Smaller, MUJI-style popovers */
+.popover-content {
+    max-width: 400px;
+    padding: 24px;
+}
+
+.popover-message {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: #000080;
+    margin-bottom: 24px;
+    padding: 0 8px;
+}
+
+/* Window title bar for modals */
+.modal-content::before,
+.overlay-content::before {
+    content: '♡ Birthday Message';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(180deg, #0997FF 0%, #0053EE 100%);
+    color: white;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 8px;
+}
+
+.modal-content::before {
+    content: '♡ Birthday Message ━  □  ✕';
+}
+
+.modal-content h2 {
+    font-size: clamp(0.8rem, 3vw, 1.2rem);
+    font-weight: 400;
+    margin-top: 36px;
+    margin-bottom: 24px;
+    color: #000080;
+    line-height: 1.8;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================
+   INSTRUCTION PANEL (on cake screen)
+   ======================================== */
+
+.instruction-panel {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ECE9D8;
+    padding: 24px 32px;
+    border: 3px solid;
+    border-color: #DFDFDF #808080 #808080 #DFDFDF;
+    text-align: center;
+    max-width: 500px;
+    width: calc(100% - 32px);
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        3px 3px 8px rgba(0, 0, 0, 0.4);
+    z-index: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.instruction-panel.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.instruction-panel.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.instruction-text {
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: #000080;
+    margin-bottom: 16px;
+}
+
+/* ========================================
+   BLOW INDICATOR (small, at bottom)
+   ======================================== */
+
+.blow-indicator-small {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #C7E8FF 0%, #87CEEB 100%);
+    border: 2px solid;
+    border-color: #808080 #DFDFDF #DFDFDF #808080;
+    padding: 12px 24px;
+    font-size: 0.7rem;
+    color: #000080;
+    box-shadow:
+        inset 1px 1px 0px #FFFFFF,
+        2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    animation: float 2s ease-in-out infinite;
+}
+
+.blow-indicator-small.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.blow-indicator-small.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* Fallback button positioning */
+#tapFallbackBtn {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 500;
+}
+
+#tapFallbackBtn.hidden {
+    display: none;
+}
+
+/* ========================================
+   CONGRATULATIONS - Y2K SPARKLE
+   ======================================== */
+
+.congrats-content {
+    padding: 48px 32px;
+    background:
+        linear-gradient(45deg, #FFB6FF 0%, #B6D7FF 25%, #FFB6FF 50%, #B6D7FF 75%, #FFB6FF 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.congrats-content::before {
+    content: '♡♡♡ CONGRATULATIONS! ♡♡♡ ━  □  ✕';
+    font-size: 0.65rem;
+}
+
+.congrats-title {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 400;
+    margin-bottom: 16px;
+    margin-top: 36px;
+    color: #FF1493;
+    text-shadow:
+        2px 2px 0px #FFD700,
+        4px 4px 0px rgba(0, 0, 0, 0.2);
+    line-height: 1.6;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        text-shadow:
+            2px 2px 0px #FFD700,
+            4px 4px 0px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        text-shadow:
+            2px 2px 0px #FF69B4,
+            4px 4px 0px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.congrats-message {
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    margin-bottom: 16px;
+    color: #000080;
+    line-height: 1.8;
+}
+
+.congrats-submessage {
+    font-size: clamp(0.6rem, 2vw, 0.8rem);
+    color: #000080;
+    line-height: 1.8;
+}
+
+/* ========================================
+   CONFETTI CANVAS
+   ======================================== */
+
+#confettiCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .stage {
+        padding: 12px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .question {
+        font-size: 0.75rem;
+        padding: 40px 24px;
+        margin-bottom: 32px;
+    }
+
+    .question::before {
+        font-size: 0.6rem;
+        height: 20px;
+    }
+
+    .birthday-container {
+        gap: 24px;
+    }
+
+    .candles-container {
+        gap: 4px;
+        height: 80px;
+    }
+
+    .candle-stick {
+        width: 6px;
+        height: 32px;
+    }
+
+    .candle-flame {
+        width: 16px;
+        height: 24px;
+    }
+
+    .modal-content,
+    .overlay-content {
+        padding: 8px;
+    }
+
+    .popover-content {
+        padding: 20px;
+        max-width: 350px;
+    }
+
+    .popover-message {
+        font-size: 0.65rem;
+        margin-bottom: 20px;
+    }
+
+    .instruction-panel {
+        bottom: 100px;
+        padding: 20px 24px;
+        max-width: 400px;
+    }
+
+    .instruction-text {
+        font-size: 0.65rem;
+        margin-bottom: 12px;
+    }
+
+    .blow-indicator-small {
+        bottom: 32px;
+        font-size: 0.65rem;
+        padding: 10px 20px;
+    }
+
+    #tapFallbackBtn {
+        bottom: 80px;
+    }
+
+    .modal-content h2 {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+    }
+
+    .btn {
+        font-size: 0.65rem;
+        padding: 10px 20px;
+    }
+
+    .btn-large {
+        padding: 14px 28px;
+        font-size: 0.75rem;
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stage {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 8px;
+    }
+
+    .question {
+        font-size: 0.65rem;
+        padding: 36px 16px;
+        margin-bottom: 24px;
+    }
+
+    .question::before {
+        font-size: 0.5rem;
+        height: 18px;
+    }
+
+    .question::after {
+        font-size: 0.5rem;
+    }
+
+    .birthday-container {
+        gap: 16px;
+        padding: 8px;
+    }
+
+    .cake-container {
+        width: 90%;
+        margin: 16px auto;
+        padding: 0;
+    }
+
+    .cake-window-title {
+        font-size: 0.55rem;
+        height: 24px;
+    }
+
+    .candles-container {
+        gap: 4px;
+        width: 70%;
+        height: 64px;
+        top: 32px;
+    }
+
+    .cake {
+        padding: 12px;
+    }
+
+    .candle-stick {
+        width: 4px;
+        height: 24px;
+    }
+
+    .candle-flame {
+        width: 12px;
+        height: 20px;
+    }
+
+    .modal-content,
+    .overlay-content {
+        padding: 6px;
+    }
+
+    .popover-content {
+        padding: 16px;
+        max-width: 320px;
+    }
+
+    .popover-message {
+        font-size: 0.6rem;
+        margin-bottom: 16px;
+        line-height: 1.6;
+    }
+
+    .instruction-panel {
+        bottom: 80px;
+        padding: 16px 20px;
+        max-width: 90%;
+    }
+
+    .instruction-text {
+        font-size: 0.6rem;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+
+    .blow-indicator-small {
+        bottom: 24px;
+        font-size: 0.6rem;
+        padding: 8px 16px;
+    }
+
+    #tapFallbackBtn {
+        bottom: 60px;
+    }
+
+    .modal-content::before,
+    .overlay-content::before {
+        font-size: 0.55rem;
+        height: 24px;
+    }
+
+    .modal-content h2 {
+        font-size: 0.7rem;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .btn {
+        min-width: 120px;
+        padding: 8px 16px;
+        font-size: 0.55rem;
+    }
+
+    .btn-large {
+        font-size: 0.65rem;
+        padding: 12px 24px;
+        margin-top: 16px;
+    }
+
+    .btn-small {
+        font-size: 0.5rem;
+        padding: 8px 16px;
+        margin-top: 12px;
+    }
+
+    .banner-top {
+        margin-bottom: 16px;
+    }
+
+    .banner-bottom {
+        margin-top: 24px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

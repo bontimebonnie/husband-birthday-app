@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Audio Element -->
+    <audio id="birthdayMusic" loop>
+        <source src="birthday_song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio Enable Overlay (for iOS) -->
+    <div id="audioOverlay" class="overlay hidden">
+        <div class="overlay-content">
+            <p>Tap to enable audio</p>
+            <button id="enableAudioBtn" class="btn">Enable Audio</button>
+        </div>
+    </div>
+
+    <!-- STAGE 1: Name Input -->
+    <div id="nameInputStage" class="stage active">
+        <div class="container">
+            <h1 class="question">What is your name?</h1>
+            <form id="nameForm">
+                <input
+                    type="text"
+                    id="nameInput"
+                    placeholder="Enter your name"
+                    required
+                    autocomplete="off"
+                >
+                <button type="submit" class="btn">Continue</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STAGE 2: Birthday Page -->
+    <div id="birthdayStage" class="stage">
+        <div class="container birthday-container">
+            <!-- Top Banner -->
+            <div class="banner-container banner-top">
+                <img
+                    src="Banner 1 (top).png"
+                    alt="Birthday Banner Top"
+                    class="banner"
+                    onerror="this.style.display='none'"
+                >
+            </div>
+
+            <!-- Cake Container -->
+            <div class="cake-container">
+                <!-- Windows 2000 Title Bar -->
+                <div class="cake-window-title">♡ Birthday Cake ━  □  ✕</div>
+
+                <!-- Candles will be dynamically generated here -->
+                <div id="candlesContainer" class="candles-container"></div>
+
+                <!-- Cake Image -->
+                <img
+                    id="cakeImage"
+                    src="birthday cake.png"
+                    alt="Birthday Cake"
+                    class="cake"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\'%3E%3Crect fill=\'%23FFB6C1\' width=\'400\' height=\'400\' rx=\'20\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'60\' text-anchor=\'middle\' dy=\'.3em\'%3E🎂%3C/text%3E%3C/svg%3E'"
+                >
+            </div>
+
+            <button id="thankYouBtn" class="btn btn-large">Thank You</button>
+
+            <!-- Bottom Banner -->
+            <div class="banner-container banner-bottom">
+                <img
+                    src="Banner 2 (bottom).png"
+                    alt="Birthday Banner Bottom"
+                    class="banner"
+                    onerror="this.style.display='none'"
+                >
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 3: Make a Wish Popup -->
+    <div id="wishModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Make a wish</h2>
+            <button id="madeWishBtn" class="btn btn-large">I made a wish</button>
+        </div>
+    </div>
+
+    <!-- Close Eyes Popup (after "I made a wish") -->
+    <div id="closeEyesModal" class="modal hidden">
+        <div class="modal-content popover-content">
+            <h2>Make a wish</h2>
+            <p class="popover-message">Close your eyes, make a wish 🥳</p>
+            <button id="closeEyesOkBtn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <!-- Instruction Panel (on cake screen) -->
+    <div id="instructionPanel" class="instruction-panel hidden">
+        <p id="instructionText" class="instruction-text"></p>
+        <button id="instructionOkayBtn" class="btn">Okay</button>
+    </div>
+
+    <!-- Blow Indicator (small, at bottom) -->
+    <div id="blowIndicatorSmall" class="blow-indicator-small hidden">
+        💨 Blow now!
+    </div>
+
+    <!-- Feedback Popovers -->
+    <div id="firstBlowModal" class="modal hidden">
+        <div class="modal-content popover-content">
+            <h2>Nice start!</h2>
+            <p class="popover-message">Some candles heard you, but a few are still stubborn. Blow again!</p>
+            <button id="firstBlowOkBtn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <div id="secondBlowModal" class="modal hidden">
+        <div class="modal-content popover-content">
+            <h2>Almost there!</h2>
+            <p class="popover-message">Just a little more! One last blow and your wish is on its way.</p>
+            <button id="secondBlowOkBtn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <!-- STAGE 5: Congratulations Popup -->
+    <div id="congratsModal" class="modal hidden">
+        <div class="modal-content popover-content congrats-content">
+            <h2>All candles are out!</h2>
+            <p class="popover-message">Your wish for the coming year is already on its way to coming true. And someone who loves you very much made this moment just for you 💛</p>
+            <button id="congratsContinueBtn" class="btn btn-large">Continue</button>
+        </div>
+    </div>
+
+    <!-- Fallback tap button (only shows if mic access denied) -->
+    <button id="tapFallbackBtn" class="btn btn-small hidden">Tap to blow (fallback)</button>
+
+    <!-- Confetti Container -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>

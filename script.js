@@ -1,0 +1,491 @@
+// ========================================
+// PIXEL-ART BIRTHDAY APP - JAVASCRIPT
+// Clean & Optimized Code
+// ========================================
+
+'use strict';
+
+// ========================================
+// STATE MANAGEMENT
+// ========================================
+
+const state = {
+    userName: '',
+    blowAttempt: 0, // 0 = not started, 1 = first blow, 2 = second blow, 3 = final blow
+    totalCandles: 0,
+    litCandles: [],
+    audioContext: null,
+    analyser: null,
+    microphone: null,
+    microphoneAllowed: false,
+    isListeningForBlow: false
+};
+
+// ========================================
+// DOM ELEMENTS
+// ========================================
+
+const elements = {
+    // Stages
+    nameInputStage: document.getElementById('nameInputStage'),
+    birthdayStage: document.getElementById('birthdayStage'),
+
+    // Forms & Inputs
+    nameForm: document.getElementById('nameForm'),
+    nameInput: document.getElementById('nameInput'),
+
+    // Buttons
+    thankYouBtn: document.getElementById('thankYouBtn'),
+    madeWishBtn: document.getElementById('madeWishBtn'),
+    closeEyesOkBtn: document.getElementById('closeEyesOkBtn'),
+    instructionOkayBtn: document.getElementById('instructionOkayBtn'),
+    firstBlowOkBtn: document.getElementById('firstBlowOkBtn'),
+    secondBlowOkBtn: document.getElementById('secondBlowOkBtn'),
+    congratsContinueBtn: document.getElementById('congratsContinueBtn'),
+    tapFallbackBtn: document.getElementById('tapFallbackBtn'),
+    enableAudioBtn: document.getElementById('enableAudioBtn'),
+
+    // Modals & Panels
+    wishModal: document.getElementById('wishModal'),
+    closeEyesModal: document.getElementById('closeEyesModal'),
+    instructionPanel: document.getElementById('instructionPanel'),
+    instructionText: document.getElementById('instructionText'),
+    blowIndicatorSmall: document.getElementById('blowIndicatorSmall'),
+    firstBlowModal: document.getElementById('firstBlowModal'),
+    secondBlowModal: document.getElementById('secondBlowModal'),
+    congratsModal: document.getElementById('congratsModal'),
+    audioOverlay: document.getElementById('audioOverlay'),
+
+    // Dynamic Content
+    candlesContainer: document.getElementById('candlesContainer'),
+
+    // Media
+    birthdayMusic: document.getElementById('birthdayMusic'),
+    confettiCanvas: document.getElementById('confettiCanvas')
+};
+
+// ========================================
+// CONSTANTS
+// ========================================
+
+const CONFIG = {
+    TRANSITION_DELAY: 600,
+    BLOW_THRESHOLD: 50,
+    BLOW_COOLDOWN: 1000,
+    CONFETTI_COUNT: 150,
+    CONFETTI_COLORS: ['#FFB6C1', '#FFD700', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C'],
+    CANDLES: {
+        MOBILE: 8,
+        TABLET: 12,
+        DESKTOP: 15
+    }
+};
+
+// ========================================
+// STAGE 1: NAME INPUT
+// ========================================
+
+elements.nameForm.addEventListener('submit', handleNameSubmit);
+
+function handleNameSubmit(e) {
+    e.preventDefault();
+    state.userName = elements.nameInput.value.trim();
+
+    if (state.userName) {
+        transitionToStage(elements.nameInputStage, elements.birthdayStage, () => {
+            initializeCake();
+            attemptAutoplay();
+        });
+    }
+}
+
+// ========================================
+// STAGE TRANSITIONS
+// ========================================
+
+function transitionToStage(fromStage, toStage, callback) {
+    fromStage.classList.remove('active');
+
+    setTimeout(() => {
+        toStage.classList.add('active');
+        if (callback) callback();
+    }, CONFIG.TRANSITION_DELAY);
+}
+
+// ========================================
+// AUDIO MANAGEMENT
+// ========================================
+
+function attemptAutoplay() {
+    const playPromise = elements.birthdayMusic.play();
+
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => console.log('Audio autoplaying'))
+            .catch(() => showAudioOverlay());
+    }
+}
+
+function showAudioOverlay() {
+    console.log('Autoplay blocked, showing audio overlay');
+    elements.audioOverlay.classList.remove('hidden');
+    elements.audioOverlay.classList.add('active');
+}
+
+elements.enableAudioBtn.addEventListener('click', () => {
+    elements.birthdayMusic.play();
+    elements.audioOverlay.classList.remove('active');
+    setTimeout(() => elements.audioOverlay.classList.add('hidden'), 300);
+});
+
+// ========================================
+// STAGE 2: CAKE INITIALIZATION
+// ========================================
+
+function initializeCake() {
+    const screenWidth = window.innerWidth;
+
+    // Determine candle count based on screen size
+    if (screenWidth < 480) {
+        state.totalCandles = CONFIG.CANDLES.MOBILE;
+    } else if (screenWidth < 768) {
+        state.totalCandles = CONFIG.CANDLES.TABLET;
+    } else {
+        state.totalCandles = CONFIG.CANDLES.DESKTOP;
+    }
+
+    // Generate candles
+    elements.candlesContainer.innerHTML = '';
+    state.litCandles = [];
+
+    for (let i = 0; i < state.totalCandles; i++) {
+        const candle = createCandleElement();
+        elements.candlesContainer.appendChild(candle);
+        state.litCandles.push(true);
+    }
+}
+
+function createCandleElement() {
+    const candle = document.createElement('div');
+    candle.className = 'candle';
+    candle.innerHTML = `
+        <div class="candle-flame"></div>
+        <div class="candle-stick"></div>
+    `;
+    return candle;
+}
+
+// ========================================
+// STAGE 3: WISH MODAL & BLOWING SEQUENCE
+// ========================================
+
+const INSTRUCTION_MESSAGES = [
+    "Give it a try! Blow softly and see which candles listen to you.",
+    "You've got this. Blow again and see the magic happen!",
+    "Final blow! This is the moment!"
+];
+
+elements.thankYouBtn.addEventListener('click', showWishModal);
+elements.madeWishBtn.addEventListener('click', handleMadeWish);
+elements.closeEyesOkBtn.addEventListener('click', handleCloseEyesOk);
+elements.instructionOkayBtn.addEventListener('click', handleInstructionOkay);
+elements.firstBlowOkBtn.addEventListener('click', handleFirstBlowOk);
+elements.secondBlowOkBtn.addEventListener('click', handleSecondBlowOk);
+elements.congratsContinueBtn.addEventListener('click', handleCongratsContinue);
+
+function showWishModal() {
+    showModal(elements.wishModal);
+}
+
+function handleMadeWish() {
+    hideModal(elements.wishModal, () => {
+        showModal(elements.closeEyesModal);
+    });
+}
+
+function handleCloseEyesOk() {
+    hideModal(elements.closeEyesModal, () => {
+        state.blowAttempt = 1;
+        showInstructionPanel(INSTRUCTION_MESSAGES[0]);
+        requestMicrophoneAccess();
+    });
+}
+
+function showInstructionPanel(message) {
+    elements.instructionText.textContent = message;
+    elements.instructionPanel.classList.remove('hidden');
+    elements.instructionPanel.classList.add('active');
+}
+
+function hideInstructionPanel(callback) {
+    elements.instructionPanel.classList.remove('active');
+    setTimeout(() => {
+        elements.instructionPanel.classList.add('hidden');
+        if (callback) callback();
+    }, 300);
+}
+
+function handleInstructionOkay() {
+    hideInstructionPanel(() => {
+        // Show blow indicator
+        elements.blowIndicatorSmall.classList.remove('hidden');
+        elements.blowIndicatorSmall.classList.add('active');
+
+        // Start listening for blows
+        state.isListeningForBlow = true;
+
+        // Show fallback button if mic not allowed
+        if (!state.microphoneAllowed) {
+            elements.tapFallbackBtn.classList.remove('hidden');
+        }
+    });
+}
+
+function handleFirstBlowOk() {
+    hideModal(elements.firstBlowModal, () => {
+        state.blowAttempt = 2;
+        showInstructionPanel(INSTRUCTION_MESSAGES[1]);
+    });
+}
+
+function handleSecondBlowOk() {
+    hideModal(elements.secondBlowModal, () => {
+        state.blowAttempt = 3;
+        showInstructionPanel(INSTRUCTION_MESSAGES[2]);
+    });
+}
+
+function handleCongratsContinue() {
+    // This can navigate to a final celebration screen
+    // For now, just hide the modal
+    hideModal(elements.congratsModal);
+}
+
+// ========================================
+// STAGE 4: MICROPHONE ACCESS
+// ========================================
+
+// ========================================
+// MICROPHONE DETECTION
+// ========================================
+
+async function requestMicrophoneAccess() {
+    // Only request once
+    if (state.audioContext) return;
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        state.microphoneAllowed = true;
+        setupAudioAnalyser(stream);
+    } catch (error) {
+        console.log('Microphone access denied:', error);
+        state.microphoneAllowed = false;
+    }
+}
+
+function setupAudioAnalyser(stream) {
+    state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    state.analyser = state.audioContext.createAnalyser();
+    state.microphone = state.audioContext.createMediaStreamSource(stream);
+    state.microphone.connect(state.analyser);
+    state.analyser.fftSize = 256;
+
+    detectBlow();
+}
+
+function detectBlow() {
+    const bufferLength = state.analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function checkVolume() {
+        // Only detect if we're listening
+        if (!state.isListeningForBlow || state.blowAttempt === 0 || state.blowAttempt > 3) {
+            requestAnimationFrame(checkVolume);
+            return;
+        }
+
+        state.analyser.getByteFrequencyData(dataArray);
+
+        const average = calculateAverage(dataArray);
+
+        if (average > CONFIG.BLOW_THRESHOLD) {
+            handleBlow();
+            setTimeout(() => requestAnimationFrame(checkVolume), CONFIG.BLOW_COOLDOWN);
+        } else {
+            requestAnimationFrame(checkVolume);
+        }
+    }
+
+    checkVolume();
+}
+
+function calculateAverage(array) {
+    let sum = 0;
+    for (let i = 0; i < array.length; i++) {
+        sum += array[i];
+    }
+    return sum / array.length;
+}
+
+// ========================================
+// BLOW HANDLER
+// ========================================
+
+elements.tapFallbackBtn.addEventListener('click', handleBlow);
+
+function handleBlow() {
+    if (!state.isListeningForBlow || state.blowAttempt === 0 || state.blowAttempt > 3) return;
+
+    // Stop listening temporarily
+    state.isListeningForBlow = false;
+
+    // Hide blow indicator
+    elements.blowIndicatorSmall.classList.remove('active');
+    elements.blowIndicatorSmall.classList.add('hidden');
+
+    // Hide fallback button
+    elements.tapFallbackBtn.classList.add('hidden');
+
+    // Progressive candle blowout
+    const blowoutMap = { 1: 0.3, 2: 0.7, 3: 1.0 };
+    blowOutCandles(blowoutMap[state.blowAttempt]);
+
+    // Show appropriate feedback modal
+    setTimeout(() => {
+        if (state.blowAttempt === 1) {
+            showModal(elements.firstBlowModal);
+        } else if (state.blowAttempt === 2) {
+            showModal(elements.secondBlowModal);
+        } else if (state.blowAttempt === 3) {
+            finishBlowing();
+        }
+    }, 800);
+}
+
+function blowOutCandles(percentage) {
+    const targetCount = Math.floor(state.totalCandles * percentage);
+    const candles = document.querySelectorAll('.candle-flame');
+
+    const currentlyLit = state.litCandles.filter(lit => lit).length;
+    const toBlowOut = targetCount - (state.totalCandles - currentlyLit);
+
+    let blown = 0;
+    for (let i = 0; i < state.litCandles.length && blown < toBlowOut; i++) {
+        if (state.litCandles[i]) {
+            state.litCandles[i] = false;
+            candles[i].classList.add('out');
+            blown++;
+        }
+    }
+}
+
+function finishBlowing() {
+    startConfetti();
+    setTimeout(() => {
+        showModal(elements.congratsModal);
+    }, 500);
+}
+
+function cleanupMicrophone() {
+    if (state.microphone) {
+        state.microphone.disconnect();
+    }
+    if (state.audioContext) {
+        state.audioContext.close();
+    }
+}
+
+
+// ========================================
+// MODAL UTILITIES
+// ========================================
+
+function showModal(modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('active');
+}
+
+function hideModal(modal, callback) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        if (callback) callback();
+    }, 300);
+}
+
+// ========================================
+// CONFETTI ANIMATION
+// ========================================
+
+function startConfetti() {
+    const canvas = elements.confettiCanvas;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+
+    class ConfettiPiece {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height - canvas.height;
+            this.w = Math.random() * 10 + 5;
+            this.h = Math.random() * 5 + 5;
+            this.color = CONFIG.CONFETTI_COLORS[Math.floor(Math.random() * CONFIG.CONFETTI_COLORS.length)];
+            this.speedY = Math.random() * 3 + 2;
+            this.speedX = Math.random() * 2 - 1;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = Math.random() * 10 - 5;
+        }
+
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > canvas.height) {
+                this.y = -20;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.fillStyle = this.color;
+            ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+            ctx.restore();
+        }
+    }
+
+    // Initialize confetti pieces
+    for (let i = 0; i < CONFIG.CONFETTI_COUNT; i++) {
+        confettiPieces.push(new ConfettiPiece());
+    }
+
+    // Animation loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiPieces.forEach(piece => {
+            piece.update();
+            piece.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+// ========================================
+// RESPONSIVE CANVAS RESIZE
+// ========================================
+
+window.addEventListener('resize', handleResize);
+
+function handleResize() {
+    if (elements.confettiCanvas.width > 0) {
+        elements.confettiCanvas.width = window.innerWidth;
+        elements.confettiCanvas.height = window.innerHeight;
+    }
+}
