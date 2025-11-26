@@ -35,8 +35,7 @@ const elements = {
     nameInput: document.getElementById('nameInput'),
 
     // Buttons
-    thankYouBtn: document.getElementById('thankYouBtn'),
-    madeWishBtn: document.getElementById('madeWishBtn'),
+    letsGoBtn: document.getElementById('letsGoBtn'),
     closeEyesOkBtn: document.getElementById('closeEyesOkBtn'),
     instructionOkayBtn: document.getElementById('instructionOkayBtn'),
     firstBlowOkBtn: document.getElementById('firstBlowOkBtn'),
@@ -45,7 +44,6 @@ const elements = {
     enableAudioBtn: document.getElementById('enableAudioBtn'),
 
     // Modals & Panels
-    wishModal: document.getElementById('wishModal'),
     closeEyesModal: document.getElementById('closeEyesModal'),
     instructionPanel: document.getElementById('instructionPanel'),
     instructionText: document.getElementById('instructionText'),
@@ -174,8 +172,7 @@ const INSTRUCTION_MESSAGES = [
     "Final blow! This is the moment!"
 ];
 
-elements.thankYouBtn.addEventListener('click', showWishModal);
-elements.madeWishBtn.addEventListener('click', handleMadeWish);
+elements.letsGoBtn.addEventListener('click', handleLetsGo);
 elements.closeEyesOkBtn.addEventListener('click', handleCloseEyesOk);
 elements.instructionOkayBtn.addEventListener('click', handleInstructionOkay);
 elements.firstBlowOkBtn.addEventListener('click', handleFirstBlowOk);
@@ -183,14 +180,8 @@ elements.secondBlowOkBtn.addEventListener('click', handleSecondBlowOk);
 elements.birthdayCardImage.addEventListener('click', showEnlargedCard);
 elements.closeEnlargedCardBtn.addEventListener('click', closeEnlargedCard);
 
-function showWishModal() {
-    showModal(elements.wishModal);
-}
-
-function handleMadeWish() {
-    hideModal(elements.wishModal, () => {
-        showModal(elements.closeEyesModal);
-    });
+function handleLetsGo() {
+    showModal(elements.closeEyesModal);
 }
 
 function handleCloseEyesOk() {
