@@ -41,7 +41,6 @@ const elements = {
     instructionOkayBtn: document.getElementById('instructionOkayBtn'),
     firstBlowOkBtn: document.getElementById('firstBlowOkBtn'),
     secondBlowOkBtn: document.getElementById('secondBlowOkBtn'),
-    congratsContinueBtn: document.getElementById('congratsContinueBtn'),
     tapFallbackBtn: document.getElementById('tapFallbackBtn'),
     enableAudioBtn: document.getElementById('enableAudioBtn'),
 
@@ -54,6 +53,9 @@ const elements = {
     firstBlowModal: document.getElementById('firstBlowModal'),
     secondBlowModal: document.getElementById('secondBlowModal'),
     congratsModal: document.getElementById('congratsModal'),
+    birthdayCardImage: document.getElementById('birthdayCardImage'),
+    enlargedCardModal: document.getElementById('enlargedCardModal'),
+    closeEnlargedCardBtn: document.getElementById('closeEnlargedCardBtn'),
     audioOverlay: document.getElementById('audioOverlay'),
 
     // Dynamic Content
@@ -178,7 +180,8 @@ elements.closeEyesOkBtn.addEventListener('click', handleCloseEyesOk);
 elements.instructionOkayBtn.addEventListener('click', handleInstructionOkay);
 elements.firstBlowOkBtn.addEventListener('click', handleFirstBlowOk);
 elements.secondBlowOkBtn.addEventListener('click', handleSecondBlowOk);
-elements.congratsContinueBtn.addEventListener('click', handleCongratsContinue);
+elements.birthdayCardImage.addEventListener('click', showEnlargedCard);
+elements.closeEnlargedCardBtn.addEventListener('click', closeEnlargedCard);
 
 function showWishModal() {
     showModal(elements.wishModal);
@@ -233,21 +236,39 @@ function handleInstructionOkay() {
 function handleFirstBlowOk() {
     hideModal(elements.firstBlowModal, () => {
         state.blowAttempt = 2;
-        showInstructionPanel(INSTRUCTION_MESSAGES[1]);
+        // Go straight to blowing - no instruction panel
+        elements.blowIndicatorSmall.classList.remove('hidden');
+        elements.blowIndicatorSmall.classList.add('active');
+        state.isListeningForBlow = true;
+
+        // Show fallback button if mic not allowed
+        if (!state.microphoneAllowed) {
+            elements.tapFallbackBtn.classList.remove('hidden');
+        }
     });
 }
 
 function handleSecondBlowOk() {
     hideModal(elements.secondBlowModal, () => {
         state.blowAttempt = 3;
-        showInstructionPanel(INSTRUCTION_MESSAGES[2]);
+        // Go straight to blowing - no instruction panel
+        elements.blowIndicatorSmall.classList.remove('hidden');
+        elements.blowIndicatorSmall.classList.add('active');
+        state.isListeningForBlow = true;
+
+        // Show fallback button if mic not allowed
+        if (!state.microphoneAllowed) {
+            elements.tapFallbackBtn.classList.remove('hidden');
+        }
     });
 }
 
-function handleCongratsContinue() {
-    // This can navigate to a final celebration screen
-    // For now, just hide the modal
-    hideModal(elements.congratsModal);
+function showEnlargedCard() {
+    showModal(elements.enlargedCardModal);
+}
+
+function closeEnlargedCard() {
+    hideModal(elements.enlargedCardModal);
 }
 
 // ========================================
