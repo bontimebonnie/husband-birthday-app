@@ -50,6 +50,9 @@ const elements = {
     blowIndicatorSmall: document.getElementById('blowIndicatorSmall'),
     firstBlowModal: document.getElementById('firstBlowModal'),
     secondBlowModal: document.getElementById('secondBlowModal'),
+    funMessageModal: document.getElementById('funMessageModal'),
+    funMessageText: document.getElementById('funMessageText'),
+    funMessageOkBtn: document.getElementById('funMessageOkBtn'),
     congratsModal: document.getElementById('congratsModal'),
     birthdayCardImage: document.getElementById('birthdayCardImage'),
     enlargedCardModal: document.getElementById('enlargedCardModal'),
@@ -76,6 +79,13 @@ const CONFIG = {
     CONFETTI_COLORS: ['#FFB6C1', '#FFD700', '#87CEEB', '#98FB98', '#DDA0DD', '#F0E68C'],
     TOTAL_CANDLES: 35
 };
+
+const FUN_MESSAGES = [
+    "Best wife ever!",
+    "This banner is amazing!",
+    "I'm loved 😌",
+    "She made this?? Wow!"
+];
 
 // ========================================
 // STAGE 1: NAME INPUT
@@ -183,6 +193,7 @@ elements.closeEyesOkBtn.addEventListener('click', handleCloseEyesOk);
 elements.instructionOkayBtn.addEventListener('click', handleInstructionOkay);
 elements.firstBlowOkBtn.addEventListener('click', handleFirstBlowOk);
 elements.secondBlowOkBtn.addEventListener('click', handleSecondBlowOk);
+elements.funMessageOkBtn.addEventListener('click', handleFunMessageOk);
 elements.birthdayCardImage.addEventListener('click', showEnlargedCard);
 elements.closeEnlargedCardBtn.addEventListener('click', closeEnlargedCard);
 
@@ -214,6 +225,9 @@ function hideInstructionPanel(callback) {
 
 function handleInstructionOkay() {
     hideInstructionPanel(() => {
+        // Hide Let's go button
+        elements.letsGoBtn.style.display = 'none';
+
         // Show blow indicator
         elements.blowIndicatorSmall.classList.remove('hidden');
         elements.blowIndicatorSmall.classList.add('active');
@@ -266,6 +280,12 @@ function showEnlargedCard() {
 
 function closeEnlargedCard() {
     hideModal(elements.enlargedCardModal);
+}
+
+function handleFunMessageOk() {
+    hideModal(elements.funMessageModal, () => {
+        showModal(elements.congratsModal);
+    });
 }
 
 // ========================================
@@ -404,8 +424,13 @@ function shuffleArray(array) {
 
 function finishBlowing() {
     startConfetti();
+
+    // Pick a random fun message
+    const randomMessage = FUN_MESSAGES[Math.floor(Math.random() * FUN_MESSAGES.length)];
+    elements.funMessageText.textContent = randomMessage;
+
     setTimeout(() => {
-        showModal(elements.congratsModal);
+        showModal(elements.funMessageModal);
     }, 500);
 }
 

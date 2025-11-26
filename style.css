@@ -56,7 +56,7 @@ body {
     visibility: hidden;
     transition: opacity 0.6s ease, visibility 0.6s ease;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 16px;
     overflow-y: auto;
@@ -266,8 +266,8 @@ body {
 
 .cake-container {
     position: relative;
-    width: 80%;
-    max-width: 600px;
+    width: 90%;
+    max-width: 700px;
     margin: 24px auto;
     padding: 0;
     background: #ECE9D8;
@@ -320,7 +320,7 @@ body {
     top: 50%;
     transform:
         rotate(var(--angle))
-        translate(140px)
+        translate(160px)
         rotate(calc(-1 * var(--angle)));
     display: flex;
     flex-direction: column;
@@ -528,15 +528,13 @@ body {
    ======================================== */
 
 .blow-indicator-small {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    margin: 32px auto 0;
     background: linear-gradient(180deg, #C7E8FF 0%, #87CEEB 100%);
     border: 2px solid;
     border-color: #808080 #DFDFDF #DFDFDF #808080;
-    padding: 12px 24px;
-    font-size: 0.7rem;
+    padding: 16px 40px;
+    font-size: 0.9rem;
     color: #000080;
     box-shadow:
         inset 1px 1px 0px #FFFFFF,
@@ -546,6 +544,8 @@ body {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     animation: float 2s ease-in-out infinite;
+    min-width: 200px;
+    width: fit-content;
 }
 
 .blow-indicator-small.active {
@@ -559,16 +559,14 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateX(-50%) translateY(0px); }
-    50% { transform: translateX(-50%) translateY(-8px); }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
 }
 
 /* Fallback button positioning */
 #tapFallbackBtn {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    margin: 32px auto 0;
     z-index: 500;
 }
 
@@ -764,7 +762,7 @@ body {
     .candle {
         transform:
             rotate(var(--angle))
-            translate(110px)
+            translate(130px)
             rotate(calc(-1 * var(--angle)));
     }
 
@@ -824,13 +822,9 @@ body {
     }
 
     .blow-indicator-small {
-        bottom: 32px;
-        font-size: 0.65rem;
-        padding: 10px 20px;
-    }
-
-    #tapFallbackBtn {
-        bottom: 80px;
+        font-size: 0.75rem;
+        padding: 14px 32px;
+        margin-top: 24px;
     }
 
     .modal-content h2 {
@@ -895,7 +889,7 @@ body {
     .candle {
         transform:
             rotate(var(--angle))
-            translate(80px)
+            translate(100px)
             rotate(calc(-1 * var(--angle)));
     }
 
@@ -959,13 +953,9 @@ body {
     }
 
     .blow-indicator-small {
-        bottom: 24px;
-        font-size: 0.6rem;
-        padding: 8px 16px;
-    }
-
-    #tapFallbackBtn {
-        bottom: 60px;
+        font-size: 0.65rem;
+        padding: 12px 24px;
+        margin-top: 16px;
     }
 
     .modal-content::before,

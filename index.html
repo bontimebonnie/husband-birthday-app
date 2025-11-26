@@ -70,6 +70,14 @@
 
             <button id="letsGoBtn" class="btn btn-large">Let's go!</button>
 
+            <!-- Blow Indicator (replaces Let's go button) -->
+            <div id="blowIndicatorSmall" class="blow-indicator-small hidden">
+                💨 Blow now!
+            </div>
+
+            <!-- Fallback tap button (only shows if mic access denied) -->
+            <button id="tapFallbackBtn" class="btn btn-small hidden">Tap to blow (fallback)</button>
+
             <!-- Bottom Banner -->
             <div class="banner-container banner-bottom">
                 <img
@@ -97,11 +105,6 @@
         <button id="instructionOkayBtn" class="btn">Okay</button>
     </div>
 
-    <!-- Blow Indicator (small, at bottom) -->
-    <div id="blowIndicatorSmall" class="blow-indicator-small hidden">
-        💨 Blow now!
-    </div>
-
     <!-- Feedback Popovers -->
     <div id="firstBlowModal" class="modal hidden">
         <div class="modal-content popover-content">
@@ -116,6 +119,15 @@
             <h2>Almost there!</h2>
             <p class="popover-message">Just a little more! One last blow and your wish is on its way.</p>
             <button id="secondBlowOkBtn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <!-- Fun Message Popup (after final blow) -->
+    <div id="funMessageModal" class="modal hidden">
+        <div class="modal-content popover-content">
+            <h2>🎉</h2>
+            <p id="funMessageText" class="popover-message"></p>
+            <button id="funMessageOkBtn" class="btn">OK</button>
         </div>
     </div>
 
@@ -145,9 +157,6 @@
             >
         </div>
     </div>
-
-    <!-- Fallback tap button (only shows if mic access denied) -->
-    <button id="tapFallbackBtn" class="btn btn-small hidden">Tap to blow (fallback)</button>
 
     <!-- Confetti Container -->
     <canvas id="confettiCanvas"></canvas>
