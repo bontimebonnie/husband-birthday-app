@@ -246,6 +246,8 @@ function handleInstructionOkay() {
 function handleFirstBlowOk() {
     hideModal(elements.firstBlowModal, () => {
         state.blowAttempt = 2;
+        console.log('Starting blow attempt 2');
+
         // Go straight to blowing - no instruction panel
         elements.blowIndicatorSmall.classList.remove('hidden');
         elements.blowIndicatorSmall.classList.add('active');
@@ -261,6 +263,8 @@ function handleFirstBlowOk() {
 function handleSecondBlowOk() {
     hideModal(elements.secondBlowModal, () => {
         state.blowAttempt = 3;
+        console.log('Starting blow attempt 3');
+
         // Go straight to blowing - no instruction panel
         elements.blowIndicatorSmall.classList.remove('hidden');
         elements.blowIndicatorSmall.classList.add('active');
@@ -361,7 +365,14 @@ function calculateAverage(array) {
 elements.tapFallbackBtn.addEventListener('click', handleBlow);
 
 function handleBlow() {
-    if (!state.isListeningForBlow || state.blowAttempt === 0 || state.blowAttempt > 3) return;
+    console.log('handleBlow called - blowAttempt:', state.blowAttempt, 'isListening:', state.isListeningForBlow);
+
+    if (!state.isListeningForBlow || state.blowAttempt === 0 || state.blowAttempt > 3) {
+        console.log('Blow rejected - conditions not met');
+        return;
+    }
+
+    console.log('Processing blow for attempt:', state.blowAttempt);
 
     // Stop listening temporarily
     state.isListeningForBlow = false;
@@ -380,10 +391,13 @@ function handleBlow() {
     // Show appropriate feedback modal
     setTimeout(() => {
         if (state.blowAttempt === 1) {
+            console.log('Showing first blow modal');
             showModal(elements.firstBlowModal);
         } else if (state.blowAttempt === 2) {
+            console.log('Showing second blow modal');
             showModal(elements.secondBlowModal);
         } else if (state.blowAttempt === 3) {
+            console.log('Finishing blowing - showing confetti');
             finishBlowing();
         }
     }, 800);
