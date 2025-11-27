@@ -246,11 +246,12 @@ function handleInstructionOkay() {
 function handleFirstBlowOk() {
     hideModal(elements.firstBlowModal, () => {
         state.blowAttempt = 2;
-        console.log('Starting blow attempt 2');
 
-        // Go straight to blowing - no instruction panel
+        // Show blow indicator (same as first blow)
         elements.blowIndicatorSmall.classList.remove('hidden');
         elements.blowIndicatorSmall.classList.add('active');
+
+        // Start listening for blows
         state.isListeningForBlow = true;
 
         // Show fallback button if mic not allowed
@@ -263,11 +264,12 @@ function handleFirstBlowOk() {
 function handleSecondBlowOk() {
     hideModal(elements.secondBlowModal, () => {
         state.blowAttempt = 3;
-        console.log('Starting blow attempt 3');
 
-        // Go straight to blowing - no instruction panel
+        // Show blow indicator (same as first blow)
         elements.blowIndicatorSmall.classList.remove('hidden');
         elements.blowIndicatorSmall.classList.add('active');
+
+        // Start listening for blows
         state.isListeningForBlow = true;
 
         // Show fallback button if mic not allowed
@@ -365,14 +367,9 @@ function calculateAverage(array) {
 elements.tapFallbackBtn.addEventListener('click', handleBlow);
 
 function handleBlow() {
-    console.log('handleBlow called - blowAttempt:', state.blowAttempt, 'isListening:', state.isListeningForBlow);
-
     if (!state.isListeningForBlow || state.blowAttempt === 0 || state.blowAttempt > 3) {
-        console.log('Blow rejected - conditions not met');
         return;
     }
-
-    console.log('Processing blow for attempt:', state.blowAttempt);
 
     // Stop listening temporarily
     state.isListeningForBlow = false;
@@ -391,13 +388,10 @@ function handleBlow() {
     // Show appropriate feedback modal
     setTimeout(() => {
         if (state.blowAttempt === 1) {
-            console.log('Showing first blow modal');
             showModal(elements.firstBlowModal);
         } else if (state.blowAttempt === 2) {
-            console.log('Showing second blow modal');
             showModal(elements.secondBlowModal);
         } else if (state.blowAttempt === 3) {
-            console.log('Finishing blowing - showing confetti');
             finishBlowing();
         }
     }, 800);

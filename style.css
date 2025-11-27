@@ -68,10 +68,10 @@ body {
     justify-content: center;
 }
 
-/* Birthday stage top-aligned */
+/* Birthday stage with proper scrolling to show both banners */
 #birthdayStage {
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .stage.active {
