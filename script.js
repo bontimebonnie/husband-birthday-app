@@ -247,17 +247,19 @@ function handleFirstBlowOk() {
     hideModal(elements.firstBlowModal, () => {
         state.blowAttempt = 2;
 
-        // Show blow indicator (same as first blow)
-        elements.blowIndicatorSmall.classList.remove('hidden');
-        elements.blowIndicatorSmall.classList.add('active');
+        // Reset and show blow indicator (same as first blow)
+        setTimeout(() => {
+            elements.blowIndicatorSmall.classList.remove('hidden');
+            elements.blowIndicatorSmall.classList.add('active');
 
-        // Start listening for blows
-        state.isListeningForBlow = true;
+            // Start listening for blows
+            state.isListeningForBlow = true;
 
-        // Show fallback button if mic not allowed
-        if (!state.microphoneAllowed) {
-            elements.tapFallbackBtn.classList.remove('hidden');
-        }
+            // Show fallback button if mic not allowed
+            if (!state.microphoneAllowed) {
+                elements.tapFallbackBtn.classList.remove('hidden');
+            }
+        }, 100);
     });
 }
 
@@ -265,17 +267,19 @@ function handleSecondBlowOk() {
     hideModal(elements.secondBlowModal, () => {
         state.blowAttempt = 3;
 
-        // Show blow indicator (same as first blow)
-        elements.blowIndicatorSmall.classList.remove('hidden');
-        elements.blowIndicatorSmall.classList.add('active');
+        // Reset and show blow indicator (same as first blow)
+        setTimeout(() => {
+            elements.blowIndicatorSmall.classList.remove('hidden');
+            elements.blowIndicatorSmall.classList.add('active');
 
-        // Start listening for blows
-        state.isListeningForBlow = true;
+            // Start listening for blows
+            state.isListeningForBlow = true;
 
-        // Show fallback button if mic not allowed
-        if (!state.microphoneAllowed) {
-            elements.tapFallbackBtn.classList.remove('hidden');
-        }
+            // Show fallback button if mic not allowed
+            if (!state.microphoneAllowed) {
+                elements.tapFallbackBtn.classList.remove('hidden');
+            }
+        }, 100);
     });
 }
 
